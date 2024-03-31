@@ -1,0 +1,117 @@
+-- Опишите базу данных для школьного кабинета, в рамках которой можно фиксировать, кто и в какое время сидел за той или иной партой.
+/* Место ученика — это ряд, парта, вариант.
+В течение одного дня у разных классов бывает несколько уроков.
+Создайте минимум 3 таблицы: «Кабинет», «Ученик» и сводная таблица, где отображаются парты и ученики.
+Используйте поля «началоурока» и «конецурока» с типом данных TimeStamp.
+*/
+
+CREATE TABLE class (
+  class_id INT PRIMARY KEY,
+  class_name VARCHAR(30),
+  _comment VARCHAR(30)
+);
+
+CREATE TABLE students (
+  students_id INT PRIMARY KEY,
+  class_id INT,
+  name VARCHAR(50) NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES class (class_id)
+);
+
+CREATE TABLE classroom (
+  classroom_id INT PRIMARY KEY,
+  class_id INT,
+  classroom_name VARCHAR(15),
+  FOREIGN KEY (class_id) REFERENCES class (class_id)
+);
+
+
+CREATE TABLE place (
+  place_id INT PRIMARY KEY,
+  classroom_id INT,
+  class_id INT,
+  students_id INT,
+  _row INT(10),
+  _table INT(10),
+  _place VARCHAR(15),
+  FOREIGN KEY (classroom_id) REFERENCES classroom (classroom_id),
+  FOREIGN KEY (class_id) REFERENCES class (class_id),
+  FOREIGN KEY (students_id) REFERENCES students (students_id)
+);
+
+CREATE TABLE timinglessons (
+  timinglessons_id INT PRIMARY KEY,
+  class_id INT,
+  time_start TIMESTAMP,
+  time_end TIMESTAMP,
+  FOREIGN KEY (class_id) REFERENCES class (class_id)
+);
+
+
+INSERT INTO class VALUES (1, '1-A', '2023');
+INSERT INTO class VALUES (2, '1-Б', '2023');
+INSERT INTO class VALUES (3, '2-A', '2022');
+INSERT INTO class VALUES (4, '2-Б', '2022');
+INSERT INTO class VALUES (5, '3-В', '2021');
+
+INSERT INTO students VALUES (1, 1, 'Иванов И. И.');
+INSERT INTO students VALUES (2, 1, 'Власова М. В.');
+INSERT INTO students VALUES (3, 3, 'Петрова П. П.');
+INSERT INTO students VALUES (4, 2, 'Васильев В. В.');
+INSERT INTO students VALUES (5, 4, 'Кузьмина К.К.');
+INSERT INTO students VALUES (6, 5, 'Озбарнэ О.О.');
+INSERT INTO students VALUES (7, 5, 'Килмастер Л.Г.');
+INSERT INTO students VALUES (8, 5, 'Стинг В.П.');
+
+INSERT INTO classroom VALUES (1, 1, '101');
+INSERT INTO classroom VALUES (2, 2, '102');
+INSERT INTO classroom VALUES (3, 3, '201');
+INSERT INTO classroom VALUES (4, 4, '202');
+INSERT INTO classroom VALUES (5, 5, '501');
+
+
+INSERT INTO place VALUES (1, 1, 1, 1, 1, 1, 'Левое');
+INSERT INTO place VALUES (2, 1, 1, 2, 1, 1, 'Правое');
+INSERT INTO place VALUES (3, 3, 1, 3, 1, 1, 'Левое');
+INSERT INTO place VALUES (4, 2, 1, 4, 1, 1, 'Левое');
+INSERT INTO place VALUES (5, 4, 1, 5, 1, 1, 'Правое');
+INSERT INTO place VALUES (6, 5, 1, 6, 1, 1, 'Левое');
+INSERT INTO place VALUES (7, 5, 1, 7, 2, 2, 'Правое');
+INSERT INTO place VALUES (8, 5, 1, 8, 3, 3, 'Правое');
+
+
+INSERT INTO timinglessons VALUES (1, 1, '2022-05-15 08:30:00', '2022-05-15 09:15:00');
+INSERT INTO timinglessons VALUES (2, 2, '2022-05-15 08:30:00', '2022-05-15 09:15:00');
+INSERT INTO timinglessons VALUES (3, 3, '2022-05-15 08:30:00', '2022-05-15 09:15:00');
+INSERT INTO timinglessons VALUES (4, 4, '2022-05-15 08:30:00', '2022-05-15 09:15:00');
+INSERT INTO timinglessons VALUES (5, 5, '2022-05-15 08:30:00', '2022-05-15 09:15:00');
+INSERT INTO timinglessons VALUES (6, 1, '2022-05-15 09:30:00', '2022-05-15 10:15:00');
+INSERT INTO timinglessons VALUES (7, 2, '2022-05-15 09:30:00', '2022-05-15 10:15:00');
+INSERT INTO timinglessons VALUES (8, 3, '2022-05-15 09:30:00', '2022-05-15 10:15:00');
+INSERT INTO timinglessons VALUES (9, 4, '2022-05-15 09:30:00', '2022-05-15 10:15:00');
+INSERT INTO timinglessons VALUES (10, 5, '2022-05-15 09:30:00', '2022-05-15 10:15:00');
+INSERT INTO timinglessons VALUES (11, 1, '2022-05-15 10:30:00', '2022-05-15 11:15:00');
+INSERT INTO timinglessons VALUES (12, 2, '2022-05-15 10:30:00', '2022-05-15 11:15:00');
+INSERT INTO timinglessons VALUES (13, 3, '2022-05-15 10:30:00', '2022-05-15 11:15:00');
+INSERT INTO timinglessons VALUES (14, 4, '2022-05-15 10:30:00', '2022-05-15 11:15:00');
+INSERT INTO timinglessons VALUES (15, 5, '2022-05-15 10:30:00', '2022-05-15 11:15:00');
+INSERT INTO timinglessons VALUES (16, 1, '2022-05-15 11:30:00', '2022-05-15 12:15:00');
+INSERT INTO timinglessons VALUES (17, 2, '2022-05-15 11:30:00', '2022-05-15 12:15:00');
+INSERT INTO timinglessons VALUES (18, 3, '2022-05-15 11:30:00', '2022-05-15 12:15:00');
+INSERT INTO timinglessons VALUES (19, 4, '2022-05-15 11:30:00', '2022-05-15 12:15:00');
+INSERT INTO timinglessons VALUES (20, 5, '2022-05-15 11:30:00', '2022-05-15 12:15:00');
+
+
+-- SELECT * FROM students 
+-- SELECT * FROM class 
+-- SELECT * FROM classroom
+-- SELECT * FROM place
+-- SELECT * FROM timinglessons 
+
+-- SELECT name, class_name FROM students, class WHERE students.class_id = class.class_id -- Ученики - класс
+-- SELECT name, place_id, _row, _table, _place From place RIGHT JOIN students ON place.place_id = students.students_id -- Место ученика в кабинете
+
+
+SELECT class_name, time_start, time_end, classroom_name 
+    FROM class, timinglessons, classroom 
+    WHERE timinglessons.class_id = class.class_id AND classroom.classroom_id = class.class_id -- Расписание занятий в кабинетах 
